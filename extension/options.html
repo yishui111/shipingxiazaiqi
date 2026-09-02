@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>B站下载助手 - 选项</title>
+<style>
+  body { font-family: "Microsoft YaHei", sans-serif; max-width: 520px; margin: 40px auto; padding: 0 16px; color: #333; }
+  h1 { font-size: 18px; color: #fb7299; }
+  p { font-size: 13px; color: #666; line-height: 1.7; }
+  code { background: #f2f2f2; padding: 1px 6px; border-radius: 4px; }
+  input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; box-sizing: border-box; }
+  button { margin-top: 12px; padding: 10px 22px; border: 0; border-radius: 6px; background: #fb7299; color: #fff; font-size: 14px; cursor: pointer; }
+  #msg { margin-left: 10px; font-size: 13px; color: #52c41a; }
+</style>
+</head>
+<body>
+  <h1>🎬 B站下载助手 设置</h1>
+  <p>填入下载器的访问令牌。打开下载器页面（运行 start.bat 后自动弹出）即可看到令牌；打开 <code>http://127.0.0.1:8787</code> 后按 F12 输入 <code>fetch("/api/settings?token=")</code> 不行的话，直接看页面「①」区域里的书签代码，里面 <code>var t="..."</code> 引号里的内容就是令牌。</p>
+  <input id="token" type="text" placeholder="粘贴令牌">
+  <div><button id="save">保存</button><span id="msg"></span></div>
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B站视频下载器</title>
+<link rel="stylesheet" href="/static/style.css">
+<script>
+  window.__APP__ = { token: {{ token|tojson }}, host: {{ host|tojson }}, port: {{ port|tojson }} };
+</script>
+</head>
+<body>
+<header>
+  <div class="head-left">
+    <h1>🎬 B站视频下载器</h1>
+    <span class="badge">服务运行中 · {{ host }}:{{ port }}</span>
+  </div>
+</header>
+
+<main>
+  <!-- ① 书签安装 -->
+  <section class="card">
+    <h2>① 装好"一键下载书签"（推荐，装一次永久用）</h2>
+    <p class="desc">在B站网页看视频时，点一下书签，这个视频就会自动开始下载，并弹出进度页。书签不会收集任何信息，只把当前页面的视频链接发给本机下载器。</p>
+    <div class="bookmark-wrap">
+      <textarea id="bookmarklet" readonly spellcheck="false"></textarea>
+      <button id="copy-bookmark" class="btn primary">复制书签代码</button>
+    </div>
+    <p class="tip">💡 最省事的装法：先<b>完全关闭浏览器</b>，然后双击项目文件夹里的 <code>install_bookmark.bat</code>，它会自动把书签写进 Chrome/Edge 书签栏，重开浏览器就能看到。也可以手动建书签：书签管理器 → 新建书签 → 网址栏粘贴上面代码 → 保存。点书签后：当前视频自动下载；若属于合集，<b>整个合集自动批量下载</b>。</p>
+  </section>
+
+  <!-- ② 手动下载 -->
+  <section class="card">
+    <h2>② 手动下载（粘贴链接）</h2>
+    <div class="row">
+      <input id="url" type="text" placeholder="粘贴B站视频链接，如 https://www.bilibili.com/video/BV1xxxxxxxxxxxxxxxx（支持分P/合集/收藏夹链接）">
+      <button id="btn-parse" class="btn">解析</button>
+    </div>
+    <div id="info" class="hidden">
+      <img id="thumb" alt="封面" hidden>
+      <div class="info-text">
+        <div id="title" class="title"></div>
+        <div id="meta" class="meta"></div>
+      </div>
+      <button id="btn-download" class="btn primary">开始下载</button>
+    </div>
+    <div id="series-box" class="series hidden">
+      <div class="series-head">📚 该视频属于合集 <b id="series-title"></b>（共 <b id="series-count"></b> 集）</div>
+      <div id="series-eps" class="series-eps"></div>
+      <div class="row">
+        <button id="btn-download-series" class="btn primary">⬇ 下载整个合集（全部N集）</button>
+        <span id="series-hint" class="tip-inline"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ 设置 -->
+  <section class="card">
+    <h2>③ 下载设置（保存后对新任务生效）</h2>
+    <div class="row wrap">
+      <label>画质
+        <select id="quality">
+          <option value="best">最高可用（推荐）</option>
+          <option value="1080p">1080P</option>
+          <option value="720p">720P</option>
+          <option value="480p">480P</option>
+          <option value="360p">360P</option>
+          <option value="audio">仅音频</option>
+        </select>
+      </label>
+      <label>范围
+        <select id="range">
+          <option value="all">全部分P / 整个合集</option>
+          <option value="first">仅第1P（当前视频）</option>
+        </select>
+      </label>
+      <label>遇到合集自动处理
+        <select id="series-mode">
+          <option value="auto">自动下载整个合集（推荐）</option>
+          <option value="single">只下载当前视频</option>
+        </select>
+      </label>
+      <label>Cookie 来源（解锁高清，不填则最高480P）
+        <select id="cookie-source">
+          <option value="none">无</option>
+          <option value="chrome">Chrome 浏览器登录态</option>
+          <option value="edge">Edge 浏览器登录态</option>
+          <option value="firefox">Firefox 登录态</option>
+          <option value="text">手动粘贴 Cookie</option>
+        </select>
+      </label>
+      <label class="check-label"><input type="checkbox" id="overwrite"> 覆盖已有文件（同名也重下）</label>
+    </div>
+    <div id="cookie-text-wrap" class="hidden">
+      <textarea id="cookie-text" rows="3" placeholder="用电脑浏览器登录 www.bilibili.com 后：F12 → 网络 → 刷新页面 → 点任意一条请求 → 复制「请求标头」里的 Cookie 整串，粘贴到这里。该串只保存在本机 data/settings.json 与 data/cookies_netscape.txt，不会上传。"></textarea>
+    </div>
+    <button id="btn-save-settings" class="btn">保存设置</button>
+    <span id="save-msg" class="save-msg"></span>
+  </section>
+
+  <!-- ④ 任务 -->
+  <section class="card">
+    <h2>④ 下载任务</h2>
+    <div class="row">
+      <button id="btn-open-folder" class="btn">📂 打开下载文件夹</button>
+      <button id="btn-clear-finished" class="btn ghost">清空已结束任务</button>
+    </div>
+    <div id="tasks"></div>
+    <div id="empty" class="empty">还没有任务。把书签装好后，去B站随便打开一个视频点书签试试；或在上方粘贴链接下载。</div>
+  </section>
+</main>
+
+<footer>仅限个人学习使用 · 请遵守 B站 用户协议与相关法律法规 · 服务只监听本机 127.0.0.1</footer>
+<script src="/static/main.js"></script>
+</body>
+</html>

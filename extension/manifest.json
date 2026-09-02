@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "B站下载助手",
+  "version": "1.0.0",
+  "description": "一键把当前B站视频发送给本机下载器（需先运行 start.bat 启动下载器）",
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["http://127.0.0.1:8787/*"],
+  "action": {
+    "default_title": "下载当前B站视频",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html"
+}
