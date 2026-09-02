@@ -31,3 +31,32 @@ check.bat     rem 环境自检
 ```
 
 日志在 `logs\server.log`。
+
+---
+
+# 项目档案与维护记忆（2026-09 整理，供后续修改前速览）
+
+## 架构速览
+
+| 组件 | 作用 |
+| ---- | ---- |
+| main.py | 入口 |
+| app/ | Flask 本地服务，127.0.0.1:8787（BILI_PORT/BILI_HOST 可改）；令牌 `config.py` 里 `TOKEN = get_token()`，首次运行随机生成存 `data/token.txt`，**不入库** |
+| extension/ | Chrome MV3 扩展 |
+| tools/install_bookmark.ps1 | 书签安装核心（自研）；**保留 UTF-8 BOM**（PS5.1 中文显示依赖，勿去 BOM） |
+| tests/ | 测试（TEST_REPORT.md 已脱敏） |
+| requirements.txt | 锁版本：Flask==3.1.3 / yt-dlp==2026.7.4 / imageio-ffmpeg==0.6.0 等 10 个 |
+| .env.example | 环境变量模板 |
+
+## 本仓库 = GitHub 公开裁剪版（重要边界）
+
+刻意不入库：真实令牌（运行时生成，data/ 已被 ignore）、.env、`.venv`(135MB)、`build`/`dist`、`downloads`(9.1GB)、`data/`、`logs/`、`__pycache__`、`*.spec`（含本机绝对路径，DEPLOY.md 第 4 节有等价 exe 打包法）。
+
+> 代码中多处 `token` 字样是令牌机制变量引用（config/server/main.js/options.js/ps1），非真实密钥，扫描误报时勿改名。
+
+## 维护约定补充
+
+- 新增功能后同步更新 README.md / DEPLOY.md / 本文件；bat 纯 ASCII+CRLF+无 BOM
+- 提交：`git add . && git commit -m "..." && git push origin main`
+- 合规：仅供个人学习/已授权内容，注意 B站条款；README 已含免责声明
+
