@@ -59,4 +59,9 @@ check.bat     rem 环境自检
 - 新增功能后同步更新 README.md / DEPLOY.md / 本文件；bat 纯 ASCII+CRLF+无 BOM
 - 提交：`git add . && git commit -m "..." && git push origin main`
 - 合规：仅供个人学习/已授权内容，注意 B站条款；README 已含免责声明
-
+---
+### 关键点（2026-09-02 上传整理补充）
+- Flask 服务 127.0.0.1:8787（BILI_PORT/HOST 可配）；令牌 TOKEN=get_token() 首次随机生成存 data/token.txt——扫描命中的 token 都是变量引用，勿改名勿报错
+- tools/install_bookmark.ps1 是书签安装核心且必须保留 UTF-8 BOM（PS5.1 中文显示依赖）
+- bili-downloader.spec 含本机绝对路径未入库；DEPLOY.md 第4节有等价 exe 打包命令
+- 依赖锁版本（Flask==3.1.3 / yt-dlp==2026.7.4 等 10 个），勿随意升级
