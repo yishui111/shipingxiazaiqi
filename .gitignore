@@ -122,3 +122,4 @@ data/
 downloads/
 # PyInstaller 打包配置含本机路径，打包用 DEPLOY.md 中的命令行方式
 *.spec
+测试结果/
